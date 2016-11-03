@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
 
 	private int tauntIndex;					// The index of the taunts array indicating the most recent taunt.
 	private Transform groundCheck;			// A position marking where to check if the player is grounded.
-	private bool grounded = false;			// Whether or not the player is grounded.
+	private RaycastHit2D grounded;			// Whether or not the player is grounded.
 	private Animator anim;					// Reference to the player's animator component.
 	private Rigidbody2D rb2d;
 
@@ -37,10 +37,10 @@ public class PlayerControl : MonoBehaviour
 	void Update()
 	{
 		// The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
-		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));  
+		grounded = Physics2D.Linecast(transform.position, groundCheck.position);  
 
 		// If the jump button is pressed and the player is grounded then the player should jump.
-		if(Input.GetButtonDown("Jump") && grounded)
+		if(Input.GetButtonDown("Jump") && grounded.collider!=null)
 			jump = true;
 	}
 

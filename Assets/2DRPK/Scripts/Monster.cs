@@ -7,6 +7,7 @@ public class Monster : MonoBehaviour {
 	private Animator anim;
 	private Vector3 direction;
 	private Vector3 startingPosition;
+	private PlayerControl playerControl;
 
 	public float walkingOffsetX; //how much it moves from the starting position (on both left and right side).
 	public float speed;
@@ -14,7 +15,7 @@ public class Monster : MonoBehaviour {
 
 	void Awake() {
 		anim = GetComponent<Animator>();
-
+		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
 	}
 
 	// Use this for initialization
@@ -39,7 +40,7 @@ public class Monster : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		anim.SetFloat("Speed", speed*direction.x);
+			anim.SetFloat("Speed", speed*direction.x);
 	}
 
 }

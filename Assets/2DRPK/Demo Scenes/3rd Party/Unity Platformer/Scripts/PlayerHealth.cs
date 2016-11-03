@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {	
@@ -9,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
 	public float hurtForce = 10f;				// The force with which the player is pushed when hurt.
 	public float damageAmount = 10f;			// The amount of damage to take when enemies touch the player
 
-	private SpriteRenderer healthBar;			// Reference to the sprite renderer of the health bar.
+	private Image healthBar;			// Reference to the sprite renderer of the health bar.
 	private float lastHitTime;					// The time at which the player was last hit.
 	private Vector3 healthScale;				// The local scale of the health bar initially (with full health).
 	private PlayerControl playerControl;		// Reference to the PlayerControl script.
@@ -20,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
 	{
 		// Setting up references.
 		playerControl = GetComponent<PlayerControl>();
-		healthBar = GameObject.Find("HealthBar").GetComponent<SpriteRenderer>();
+		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 		anim = GetComponent<Animator>();
 
 		// Getting the intial scale of the healthbar (whilst the player has full health).
@@ -28,11 +29,11 @@ public class PlayerHealth : MonoBehaviour
 	}
 
 
-	void OnCollisionEnter2D (Collision2D col)
+	void OnTriggerEnter2D (Collider2D col)
 	{
 		// If the colliding gameobject is an Enemy...
-		if(col.gameObject.tag == "Enemy")
-		{
+		if(col.tag == "Enemy")
+		{Debug.Log("here");
 			// ... and if the time exceeds the time of the last hit plus the time between hits...
 			if (Time.time > lastHitTime + repeatDamagePeriod) 
 			{

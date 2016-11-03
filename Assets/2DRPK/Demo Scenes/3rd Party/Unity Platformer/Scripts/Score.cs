@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
@@ -8,13 +9,13 @@ public class Score : MonoBehaviour
 
 	private PlayerControl playerControl;	// Reference to the player control script.
 	private int previousScore = 0;			// The score in the previous frame.
-	private GUIText _guiText;
+	private Text _guiText;
 
 	void Awake ()
 	{
 		// Setting up the reference.
 		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
-		_guiText = GetComponent<GUIText> ();
+		_guiText = GetComponent<Text> ();
 	}
 
 

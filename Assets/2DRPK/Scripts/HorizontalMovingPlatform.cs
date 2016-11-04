@@ -1,22 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(BoxCollider))]
 public class HorizontalMovingPlatform : MonoBehaviour {
 	float direction;
 	Vector3 startingPosition;
-	DistanceJoint2D joint;
 	GameObject playerOnPlatform;
 
 	public float movingDistance; //how much it moves from the starting position (on both left and right side).
 	public float speed;
 	public float startingDirection = 1; //1 right, -1 left
-	private Rigidbody2D rb2d;
+	private Rigidbody rb2d;
 
 	void Awake() {
-		joint = GetComponent<DistanceJoint2D>();
-		rb2d = GetComponent<Rigidbody2D> ();
+		rb2d = GetComponent<Rigidbody> ();
 		rb2d.isKinematic = true;
 	}
 	
@@ -44,19 +42,19 @@ public class HorizontalMovingPlatform : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter(Collider other) {
 		if(other.gameObject.tag == "Player") {
 			other.gameObject.transform.parent = transform;
 			playerOnPlatform = other.gameObject;
 		}
 	}
 
-	void OnTriggerStay2D(Collider2D other) {
+	void OnTriggerStay(Collider other) {
 		if(playerOnPlatform)
 			playerOnPlatform.transform.parent = transform;
 	}
 
-	void OnTriggerExit2D(Collider2D other) {
+	void OnTriggerExit(Collider other) {
 		if(other.gameObject.tag == "Player") {
 			other.gameObject.transform.parent = null;
 			playerOnPlatform = null;

@@ -3,13 +3,13 @@ using System.Collections;
 
 public class player : MonoBehaviour
 {
-	float speed = 10;
+	float speed = 30;
 	float gravity = -100;
 	private Vector3 dir;
 	int pickupsCollected;
 	CharacterController cc;
 	SpriteRenderer ss;
-	int jumpForce =60;
+	int jumpForce =80;
 	void Start ()
 	{
 		cc = GetComponent<CharacterController> ();

@@ -18,7 +18,7 @@ public class BasicPickup : MonoBehaviour {
 	
 	}
 
-	void OnTriggerEnter2D(Collider2D other) {
+	void OnTriggerEnter(Collider other) {
 		if(!picked) {
 			if(tag!="Finish") {
 				if (other.tag == "Player") {

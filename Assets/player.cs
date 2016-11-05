@@ -23,7 +23,8 @@ public class player : MonoBehaviour
 		cc = GetComponent<CharacterController> ();
 		ss = GetComponent<SpriteRenderer> ();
 		died = false;
-		healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
+		if (GameObject.Find("HealthBar")!=null)
+			healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
 		win = GameObject.Find("Finish");
 	}
 
@@ -70,6 +71,8 @@ public class player : MonoBehaviour
 	{
 		if (other.tag == "Finish") {
 				win.SetActive(true);
+		} else if (other.tag == "LevelUp") {
+			Application.LoadLevel(2);
 		}
 		if(!died) {
 			if (other.tag == "DeathTrigger") {

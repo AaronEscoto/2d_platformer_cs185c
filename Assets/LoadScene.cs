@@ -17,4 +17,8 @@ public class LoadScene : MonoBehaviour {
 	public void loadByIndex(int i) {
 		SceneManager.LoadScene (i);
 	}
+
+	public void quitApplication() {
+		Application.Quit();
+	}
 }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class player : MonoBehaviour
 {
@@ -10,11 +11,20 @@ public class player : MonoBehaviour
 	CharacterController cc;
 	SpriteRenderer ss;
 	int jumpForce =80;
+	public AudioClip[] ouchClips;
+	public Text healthBar;
+	public GameObject win;
+	bool died;
+	public float health = 100f;
+	public float damageAmount = 10f;
+
 	void Start ()
 	{
 		cc = GetComponent<CharacterController> ();
 		ss = GetComponent<SpriteRenderer> ();
-
+		died = false;
+		healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
+		win = GameObject.Find("Finish");
 	}
 
 	void Update ()
@@ -58,7 +68,34 @@ public class player : MonoBehaviour
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.gameObject.tag == "pickup") {
+		if (other.tag == "Finish") {
+				win.SetActive(true);
+		}
+		if(!died) {
+			if (other.tag == "DeathTrigger") {
+				int i = Random.Range (0, ouchClips.Length);
+				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
+				died = true;
+				Application.LoadLevel (Application.loadedLevel); //reload the scene
+			}
+			if (other.tag == "Boss" || other.tag == "Enemy") {
+				int i = Random.Range (0, ouchClips.Length);
+				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
+				health = health - 0.5f;
+				if (other.tag == "Boss") {
+					health = health - 2.5f;
+				}
+			
+				if (health < 0.0f)
+				{
+					healthBar.text = "0%";
+					died = true;
+					Application.LoadLevel (Application.loadedLevel); //reload the scene
+				}
+				healthBar.text = health + "%";
+			}
+		}
+		/*if (other.gameObject.tag == "pickup") {
 			Destroy (other.gameObject);
 			pickupsCollected += 1;
 		}
@@ -81,7 +118,7 @@ public class player : MonoBehaviour
 		if (other.gameObject.name == "back") {
 			Destroy (other.gameObject);
 			Application.LoadLevel (0);
-		}
+		}*/
 	}
 
 	void isGameOver ()

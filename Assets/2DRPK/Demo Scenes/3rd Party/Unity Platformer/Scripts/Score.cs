@@ -24,6 +24,8 @@ public class Score : MonoBehaviour
 		// Set the score text.
 		_guiText.text = "Score: " + score;
 
+		if (playerControl == null)
+			return;
 		// If the score has changed...
 		if(previousScore != score)
 			// ... play a taunt.

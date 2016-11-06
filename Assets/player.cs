@@ -10,7 +10,8 @@ public class player : MonoBehaviour
 	int pickupsCollected;
 	CharacterController cc;
 	SpriteRenderer ss;
-	int jumpForce =60;
+	int jumpForce =65;
+	int dJumpForce = 40;
 	public AudioClip[] ouchClips;
 	public Text healthBar;
 	public GameObject win;
@@ -21,6 +22,7 @@ public class player : MonoBehaviour
 	public Image healthBarUI;
 	float lowHealth = .99f;
 	float medHealth = .30f;
+	bool canDoubleJump = true;
 	//SpriteRenderer hBar;
 
 	void Start ()
@@ -61,21 +63,31 @@ public class player : MonoBehaviour
 	//move character around
 	void MoveAround ()
 	{
+
 		float horizontalInput = Input.GetAxis ("Horizontal");
-		if (Input.GetAxis("Vertical") > 0 ) {
-			if (cc.isGrounded) {
-				dir.y = dir.y + jumpForce;
+
+		if (cc.isGrounded) {
+			if (Input.GetAxis ("Vertical") > 0) {
+					dir.y = dir.y + jumpForce;
 			}
+			canDoubleJump = true;
 		}
 	
-	
+		if (!cc.isGrounded && canDoubleJump) {
+
+			if (Input.GetAxis ("Jump") > 0) {
+				dir.y = 0;
+				dir.y = dir.y + dJumpForce;
+				canDoubleJump = false;
+			}
+		}
+
 		dir.x = horizontalInput * speed;
 		dir.y += gravity * Time.deltaTime;
 		cc.Move (dir * Time.deltaTime);
 		animator.SetFloat ("direction", dir.x);
-	}
-
-
+		
+}
 
 
 	void OnTriggerEnter (Collider other)

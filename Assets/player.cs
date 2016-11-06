@@ -10,7 +10,7 @@ public class player : MonoBehaviour
 	int pickupsCollected;
 	CharacterController cc;
 	SpriteRenderer ss;
-	int jumpForce =80;
+	int jumpForce =60;
 	public AudioClip[] ouchClips;
 	public Text healthBar;
 	public GameObject win;

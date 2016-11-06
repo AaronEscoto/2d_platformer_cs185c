@@ -18,15 +18,23 @@ public class player : MonoBehaviour
 	public float health = 100f;
 	public float damageAmount = 10f;
 	Animator animator;
+	public Image healthBarUI;
+	float lowHealth = .99f;
+	float medHealth = .30f;
+	//SpriteRenderer hBar;
+
 	void Start ()
 	{
 		animator = GetComponent<Animator> ();
 		cc = GetComponent<CharacterController> ();
 		ss = GetComponent<SpriteRenderer> ();
 		died = false;
+
 		if (GameObject.Find("HealthBar")!=null)
 			healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
 		win = GameObject.Find("Finish");
+		healthBarUI = GameObject.Find ("Health_backup").GetComponent<Image> ();
+		//hBar = GameObject.Find("Health_backup").GetComponent<SpriteRenderer>();
 	}
 
 	void Update ()
@@ -35,6 +43,7 @@ public class player : MonoBehaviour
 		MoveAround ();
 		isGameOver ();
 		playerQuit ();
+
 	}
 
 	//changedirection
@@ -98,32 +107,18 @@ public class player : MonoBehaviour
 					Application.LoadLevel (Application.loadedLevel); //reload the scene
 				}
 				healthBar.text = health + "%";
+				healthBarUI.fillAmount = health / 100;
+
+				// this works for changing the color inspector but does not reflect in game 
+				/*
+				if (healthBarUI.fillAmount < medHealth) {
+					//hBar.color = Color.yellow;
+				}else if(healthBarUI.fillAmount < lowHealth){
+					hBar.material.color = Color.red;
+				}*/
+
 			}
 		}
-		/*if (other.gameObject.tag == "pickup") {
-			Destroy (other.gameObject);
-			pickupsCollected += 1;
-		}
-		if (other.gameObject.tag == "enemy") {
-			Destroy (other.gameObject);
-			Application.LoadLevel (0);
-		}
-		if (other.gameObject.tag == "Start") {
-			Destroy (other.gameObject);
-			Application.LoadLevel (1);
-		}
-		if (other.gameObject.name == "heart") {
-			Destroy (other.gameObject);
-			Application.LoadLevel (0);
-		}
-		if (other.gameObject.name == "directions") {
-			Destroy (other.gameObject);
-			Application.LoadLevel (2);
-		}
-		if (other.gameObject.name == "back") {
-			Destroy (other.gameObject);
-			Application.LoadLevel (0);
-		}*/
 	}
 
 	void isGameOver ()

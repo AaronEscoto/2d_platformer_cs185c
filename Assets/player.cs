@@ -17,9 +17,10 @@ public class player : MonoBehaviour
 	bool died;
 	public float health = 100f;
 	public float damageAmount = 10f;
-
+	Animator animator;
 	void Start ()
 	{
+		animator = GetComponent<Animator> ();
 		cc = GetComponent<CharacterController> ();
 		ss = GetComponent<SpriteRenderer> ();
 		died = false;
@@ -30,7 +31,7 @@ public class player : MonoBehaviour
 
 	void Update ()
 	{
-		ChangeDirection ();
+	//	ChangeDirection ();
 		MoveAround ();
 		isGameOver ();
 		playerQuit ();
@@ -51,17 +52,18 @@ public class player : MonoBehaviour
 	//move character around
 	void MoveAround ()
 	{
+		float horizontalInput = Input.GetAxis ("Horizontal");
 		if (Input.GetAxis("Vertical") > 0 ) {
 			if (cc.isGrounded) {
 				dir.y = dir.y + jumpForce;
 			}
 		}
-
 	
-		dir.x = Input.GetAxis ("Horizontal") * speed;
+	
+		dir.x = horizontalInput * speed;
 		dir.y += gravity * Time.deltaTime;
 		cc.Move (dir * Time.deltaTime);
-	
+		animator.SetFloat ("direction", dir.x);
 	}
 
 

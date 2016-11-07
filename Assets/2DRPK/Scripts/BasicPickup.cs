@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class BasicPickup : MonoBehaviour {
 
 	bool picked;
 	private Score s;
+	public Text win;
 
 	// Use this for initialization
 	void Start () {
@@ -36,9 +38,16 @@ public class BasicPickup : MonoBehaviour {
 				AudioSource audio = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 				audio.Play();
 				this.GetComponent<Renderer>().enabled = false;
-				Destroy (this.gameObject);
+				win.text = "You Win!!!";
+				StartCoroutine("load");
 			}
 			
 		}
 	}
+	IEnumerator load()
+		{
+			yield return new WaitForSeconds(3.0f);
+			Destroy (this.gameObject);
+			Application.LoadLevel(0);
+		}
 }

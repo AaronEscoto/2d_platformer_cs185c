@@ -34,7 +34,7 @@ public class player : MonoBehaviour
 
 		if (GameObject.Find("HealthBar")!=null)
 			healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
-		win = GameObject.Find("Finish");
+		win = GameObject.Find("Win");
 		healthBarUI = GameObject.Find ("Health_backup").GetComponent<Image> ();
 		//hBar = GameObject.Find("Health_backup").GetComponent<SpriteRenderer>();
 	}
@@ -92,9 +92,7 @@ public class player : MonoBehaviour
 
 	void OnTriggerEnter (Collider other)
 	{
-		if (other.tag == "Finish") {
-				win.SetActive(true);
-		} else if (other.tag == "LevelUp") {
+		if (other.tag == "LevelUp") {
 			Application.LoadLevel(2);
 		}
 		if(!died) {

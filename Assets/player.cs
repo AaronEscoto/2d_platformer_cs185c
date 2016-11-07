@@ -14,7 +14,6 @@ public class player : MonoBehaviour
 	int dJumpForce = 40;
 	public AudioClip[] ouchClips;
 	public Text healthBar;
-	public GameObject win;
 	bool died;
 	public float health = 100f;
 	public float damageAmount = 10f;
@@ -34,7 +33,6 @@ public class player : MonoBehaviour
 
 		if (GameObject.Find("HealthBar")!=null)
 			healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
-		win = GameObject.Find("Win");
 		healthBarUI = GameObject.Find ("Health_backup").GetComponent<Image> ();
 		//hBar = GameObject.Find("Health_backup").GetComponent<SpriteRenderer>();
 	}
@@ -89,14 +87,14 @@ public class player : MonoBehaviour
 		
 }
 
-
 	void OnTriggerEnter (Collider other)
 	{
 		if (other.tag == "LevelUp") {
 			Application.LoadLevel(2);
 		}
 		if(!died) {
-			if (other.tag == "DeathTrigger") {
+			if (other.CompareTag("DeathTrigger")) {
+			Debug.Log("here2");
 				int i = Random.Range (0, ouchClips.Length);
 				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
 				died = true;

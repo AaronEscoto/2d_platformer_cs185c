@@ -94,13 +94,12 @@ public class player : MonoBehaviour
 		}
 		if(!died) {
 			if (other.CompareTag("DeathTrigger")) {
-			Debug.Log("here2");
 				int i = Random.Range (0, ouchClips.Length);
 				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
 				died = true;
 				Application.LoadLevel (Application.loadedLevel); //reload the scene
 			}
-			if (other.tag == "Boss" || other.tag == "Enemy") {
+			if (other.tag == "Boss" || other.tag == "Enemy" || other.tag == "fireball") {
 				int i = Random.Range (0, ouchClips.Length);
 				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
 				health = health - 0.5f;
@@ -114,9 +113,14 @@ public class player : MonoBehaviour
 					died = true;
 					Application.LoadLevel (Application.loadedLevel); //reload the scene
 				}
+
 				healthBar.text = health + "%";
 				healthBarUI.fillAmount = health / 100;
 
+				if (other.tag == "fireball") {
+					Destroy (other.gameObject);
+					health = health - 35f;
+				}
 				// this works for changing the color inspector but does not reflect in game 
 				/*
 				if (healthBarUI.fillAmount < medHealth) {

@@ -40,7 +40,19 @@ public class Monster : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		if (tag == "Boss") {
+			if (transform.position.x - GameObject.FindGameObjectWithTag("Player").transform.position.x > 50.0f)
+				anim.SetFloat("Speed", speed*direction.x);
+			else {
+				Debug.Log("near");
+				Vector3 pos = transform.position;
+				pos.x = GameObject.FindGameObjectWithTag("Finish").transform.position.x;
+				transform.position = pos;
+				anim.SetFloat("Speed", 0);
+			}
+		} else {
 			anim.SetFloat("Speed", speed*direction.x);
+		}
 	}
 
 }

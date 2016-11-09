@@ -19,9 +19,11 @@ public class player : MonoBehaviour
 	public float damageAmount = 10f;
 	Animator animator;
 	public Image healthBarUI;
-	float lowHealth = .99f;
-	float medHealth = .30f;
+	float lowHealth = .30f;
+	float medHealth = .50f;
 	bool canDoubleJump = true;
+	public GameObject arrow;
+
 	//SpriteRenderer hBar;
 
 	void Start ()
@@ -32,14 +34,14 @@ public class player : MonoBehaviour
 		died = false;
 
 		//if (GameObject.Find("HealthBar")!=null)
-			//healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
+		//healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
 		healthBarUI = GameObject.Find ("Health_backup").GetComponent<Image> ();
 		//hBar = GameObject.Find("Health_backup").GetComponent<SpriteRenderer>();
 	}
 
 	void Update ()
 	{
-	//	ChangeDirection ();
+		//	ChangeDirection ();
 		MoveAround ();
 		isGameOver ();
 		playerQuit ();
@@ -64,13 +66,27 @@ public class player : MonoBehaviour
 
 		float horizontalInput = Input.GetAxis ("Horizontal");
 
+		if (Input.GetButtonDown("Play")) {
+			GameObject projectile = (GameObject)Instantiate (arrow);
+			Vector3 loc = transform.position;
+
+			if (dir.x >= 0) {
+				loc.x = loc.x + 3;
+				projectile.transform.position = loc;
+			} else {
+				loc.x = loc.x - 5;
+				projectile.transform.position = loc;
+			}
+
+		}
+
 		if (cc.isGrounded) {
 			if (Input.GetAxis ("Vertical") > 0) {
-					dir.y = dir.y + jumpForce;
+				dir.y = dir.y + jumpForce;
 			}
 			canDoubleJump = true;
 		}
-	
+
 		if (!cc.isGrounded && canDoubleJump) {
 
 			if (Input.GetAxis ("Jump") > 0) {
@@ -84,8 +100,8 @@ public class player : MonoBehaviour
 		dir.y += gravity * Time.deltaTime;
 		cc.Move (dir * Time.deltaTime);
 		animator.SetFloat ("direction", dir.x);
-		
-}
+
+	}
 
 	void OnTriggerEnter (Collider other)
 	{
@@ -110,7 +126,7 @@ public class player : MonoBehaviour
 					Destroy (other.gameObject);
 					health = health - 1.25f;
 				}
-			
+
 				if (health < 0.0f)
 				{
 					//healthBar.text = "0%";

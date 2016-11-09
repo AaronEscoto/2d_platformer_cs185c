@@ -13,6 +13,8 @@ public class Monster : MonoBehaviour {
 	public float speed;
 	public float startingDirection = 1; //1 right, -1 left
 
+	public Object fire;
+
 	void Awake() {
 		anim = GetComponent<Animator>();
 		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
@@ -48,9 +50,20 @@ public class Monster : MonoBehaviour {
 				pos.x = GameObject.FindGameObjectWithTag("Finish").transform.position.x;
 				transform.position = pos;
 				anim.SetFloat("Speed", 0);
+				InvokeRepeating ("fire_spawn", 1.0f, 0.5f);
+				//Instantiate(fire, transform.position, Quaternion.identity);
 			}
 		} else {
 			anim.SetFloat("Speed", speed*direction.x);
+		}
+	}
+
+	void fire_spawn () {
+		GameObject[] enemies;
+		Vector3 target = new Vector3 (transform.position.x, 0, UnityEngine.Random.Range (GameObject.FindGameObjectWithTag ("Player").transform.position.z+5, GameObject.FindGameObjectWithTag ("Player").transform.position.z+10));
+		enemies = GameObject.FindGameObjectsWithTag ("fireball");
+		if (enemies.Length < 2) {
+			Instantiate (fire, transform.position, Quaternion.identity);
 		}
 	}
 

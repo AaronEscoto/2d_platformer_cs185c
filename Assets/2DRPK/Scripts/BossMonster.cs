@@ -29,6 +29,7 @@ public class BossMonster : MonoBehaviour {
 	void Start () {
 		startingPosition = transform.position;
 		died = false;
+		InvokeRepeating ("fire_spawn", 0.0f, 3.0f);
 
 		if(startingDirection == 1)
 			direction = new Vector3(1.0f, 0.0f, 0.0f);
@@ -56,7 +57,6 @@ public class BossMonster : MonoBehaviour {
 				pos.x = GameObject.FindGameObjectWithTag("Finish").transform.position.x;
 				transform.position = pos;
 				anim.SetFloat("Speed", 0);
-				InvokeRepeating ("fire_spawn", 1.0f, 0.5f);
 			}
 		} else {
 			anim.SetFloat("Speed", speed*direction.x);
@@ -64,11 +64,8 @@ public class BossMonster : MonoBehaviour {
 	}
 
 	void fire_spawn () {
-		GameObject[] enemies;
-		enemies = GameObject.FindGameObjectsWithTag ("fireball");
-		if (enemies.Length < 2) {
-			Instantiate (fire, transform.position, Quaternion.identity);
-		}
+			GameObject fire_object = (GameObject) Instantiate (fire, transform.position, Quaternion.identity);
+			Destroy(fire_object, 8.0f);
 	}
 
 	void OnTriggerEnter (Collider other)

@@ -46,6 +46,9 @@ public class BasicPickup : MonoBehaviour {
 	}
 	IEnumerator load()
 		{
+			Destroy(GameObject.FindGameObjectWithTag("fireball"));
+			Destroy(GameObject.FindGameObjectWithTag("Boss"));
+			Destroy(GameObject.FindGameObjectWithTag("HealthBar"));
 			yield return new WaitForSeconds(3.0f);
 			Destroy (this.gameObject);
 			Application.LoadLevel(0);

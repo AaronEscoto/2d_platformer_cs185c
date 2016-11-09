@@ -13,7 +13,7 @@ public class player : MonoBehaviour
 	int jumpForce =65;
 	int dJumpForce = 40;
 	public AudioClip[] ouchClips;
-	public Text healthBar;
+	//public Text healthBar;
 	bool died;
 	public float health = 100f;
 	public float damageAmount = 10f;
@@ -31,8 +31,8 @@ public class player : MonoBehaviour
 		ss = GetComponent<SpriteRenderer> ();
 		died = false;
 
-		if (GameObject.Find("HealthBar")!=null)
-			healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
+		//if (GameObject.Find("HealthBar")!=null)
+			//healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
 		healthBarUI = GameObject.Find ("Health_backup").GetComponent<Image> ();
 		//hBar = GameObject.Find("Health_backup").GetComponent<SpriteRenderer>();
 	}
@@ -102,25 +102,25 @@ public class player : MonoBehaviour
 			if (other.tag == "Boss" || other.tag == "Enemy" || other.tag == "fireball") {
 				int i = Random.Range (0, ouchClips.Length);
 				AudioSource.PlayClipAtPoint(ouchClips[i], transform.position);
-				health = health - 0.5f;
 				if (other.tag == "Boss") {
 					health = health - 2.5f;
+				} else if (other.tag == "Enemy") {
+					health = health - 0.5f;
+				} else if (other.tag == "fireball") {
+					Destroy (other.gameObject);
+					health = health - 1.25f;
 				}
 			
 				if (health < 0.0f)
 				{
-					healthBar.text = "0%";
+					//healthBar.text = "0%";
 					died = true;
 					Application.LoadLevel (Application.loadedLevel); //reload the scene
 				}
 
-				healthBar.text = health + "%";
+				//healthBar.text = health + "%";
 				healthBarUI.fillAmount = health / 100;
 
-				if (other.tag == "fireball") {
-					Destroy (other.gameObject);
-					health = health - 35f;
-				}
 				// this works for changing the color inspector but does not reflect in game 
 				/*
 				if (healthBarUI.fillAmount < medHealth) {

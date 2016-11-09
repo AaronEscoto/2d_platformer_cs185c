@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Animator))]
 public class BossMonster : MonoBehaviour {
@@ -9,33 +10,25 @@ public class BossMonster : MonoBehaviour {
 	private Vector3 startingPosition;
 	private PlayerControl playerControl;
 
-
-	public Transform SpawnPoint;
-
 	public float walkingOffsetX; //how much it moves from the starting position (on both left and right side).
 	public float speed;
 	public float startingDirection = 1; //1 right, -1 left
-	public float distance;
-	public Rigidbody arrow;
-	public int protectionRadius, bulletSpeed;
-	public bool isAttacking;
-	public float nextFire;
-	public float fireRate = 0.5f;
-	public GameObject playerTarget;
 
+	public Object fire;
+	bool died;
+	private Image healthBar;
+	float health = 100f;
 
 	void Awake() {
 		anim = GetComponent<Animator>();
 		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 	}
 
 	// Use this for initialization
 	void Start () {
 		startingPosition = transform.position;
-		isAttacking = false;
-		protectionRadius = 70;
-		bulletSpeed = 50;
-		nextFire = 5;
+		died = false;
 
 		if(startingDirection == 1)
 			direction = new Vector3(1.0f, 0.0f, 0.0f);
@@ -47,45 +40,53 @@ public class BossMonster : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		transform.position += direction*speed*Time.deltaTime;
 
-		playerTarget = GameObject.FindGameObjectWithTag ("Player");
-		transform.position += direction * speed * Time.deltaTime;
-
-
-			if (Mathf.Abs (transform.position.x - startingPosition.x) >= walkingOffsetX) {
-				direction = -direction;
-			}
-		
-		distance = Vector3.Distance (GameObject.FindGameObjectWithTag ("Player").transform.position, 
-			GameObject.FindGameObjectWithTag ("Boss").transform.position);
-
-
-		if(distance <= protectionRadius){
-			isAttacking = true;
-			Attacking ();
-		} else {
-			isAttacking = false;
+		if(Mathf.Abs(transform.position.x - startingPosition.x) >= walkingOffsetX) {
+			direction = -direction;
 		}
-
 	}
 
-	void Attacking ()
-	{
-		nextFire -= Time.deltaTime;
-		//transform.LookAt (GameObject.FindGameObjectWithTag ("Player").transform.position);
-		if (nextFire <= 0) {
-
-			Rigidbody arrowClone = (Rigidbody)Instantiate (arrow, transform.position, transform.rotation);
-			arrowClone.velocity = transform.forward * bulletSpeed;
-			nextFire += 5;
-			}
-
-
-
-
-	}
 	void FixedUpdate() {
+		if (tag == "Boss") {
+			if (transform.position.x - GameObject.FindGameObjectWithTag("Player").transform.position.x > 50.0f)
+				anim.SetFloat("Speed", speed*direction.x);
+			else {
+				Vector3 pos = transform.position;
+				pos.x = GameObject.FindGameObjectWithTag("Finish").transform.position.x;
+				transform.position = pos;
+				anim.SetFloat("Speed", 0);
+				InvokeRepeating ("fire_spawn", 1.0f, 0.5f);
+			}
+		} else {
 			anim.SetFloat("Speed", speed*direction.x);
+		}
 	}
+
+	void fire_spawn () {
+		GameObject[] enemies;
+		enemies = GameObject.FindGameObjectsWithTag ("fireball");
+		if (enemies.Length < 2) {
+			Instantiate (fire, transform.position, Quaternion.identity);
+		}
+	}
+
+	/*void OnTriggerEnter (Collider other)
+	{
+		if(!died) {
+			if (tag == "Boss" && other.tag == "Player") {
+					health = health - 2.5f;
+			
+				if (health < 0.0f)
+				{
+					died = true;
+					gameObject.GetComponent<SpriteRenderer>().enabled = false;
+				}
+				if (healthBar)
+					healthBar.fillAmount = health / 100;
+
+			}
+		}
+	}*/
 
 }

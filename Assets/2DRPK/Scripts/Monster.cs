@@ -16,13 +16,10 @@ public class Monster : MonoBehaviour {
 
 	public Object fire;
 	bool died;
-	private Image healthBar;
-	float health = 100f;
 
 	void Awake() {
 		anim = GetComponent<Animator>();
 		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
-		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 	}
 
 	// Use this for initialization

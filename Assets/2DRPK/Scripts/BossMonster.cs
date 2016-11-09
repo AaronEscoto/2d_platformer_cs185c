@@ -16,13 +16,13 @@ public class BossMonster : MonoBehaviour {
 
 	public Object fire;
 	bool died;
-	private Image healthBar;
+	public Image healthBar;
 	float health = 100f;
 
 	void Awake() {
 		anim = GetComponent<Animator>();
 		playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
-		healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
+		//healthBar = GameObject.Find("HealthBar").GetComponent<Image>();
 	}
 
 	// Use this for initialization
@@ -71,22 +71,26 @@ public class BossMonster : MonoBehaviour {
 		}
 	}
 
-	/*void OnTriggerEnter (Collider other)
+	void OnTriggerEnter (Collider other)
 	{
 		if(!died) {
-			if (tag == "Boss" && other.tag == "Player") {
+		Debug.Log("here"+other.tag);
+			if (other.gameObject.tag == "Bullet") {
+			Debug.Log("here2");
 					health = health - 2.5f;
 			
 				if (health < 0.0f)
 				{
 					died = true;
 					gameObject.GetComponent<SpriteRenderer>().enabled = false;
+					Destroy(this.gameObject);
+					CancelInvoke("fire_spawn");
 				}
 				if (healthBar)
 					healthBar.fillAmount = health / 100;
 
 			}
 		}
-	}*/
+	}
 
 }

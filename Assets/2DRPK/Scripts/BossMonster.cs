@@ -75,7 +75,7 @@ public class BossMonster : MonoBehaviour {
 			if (other.gameObject.tag == "Bullet") {
 			Debug.Log("here2");
 					health = health - 2.5f;
-			
+
 				if (health < 0.0f)
 				{
 					died = true;

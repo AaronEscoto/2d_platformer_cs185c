@@ -13,6 +13,7 @@ public class Monster : MonoBehaviour {
 	public float walkingOffsetX; //how much it moves from the starting position (on both left and right side).
 	public float speed;
 	public float startingDirection = 1; //1 right, -1 left
+	bool died;
 
 	void Awake() {
 		anim = GetComponent<Animator>();
@@ -22,6 +23,7 @@ public class Monster : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		startingPosition = transform.position;
+		died = false;
 
 		if(startingDirection == 1)
 			direction = new Vector3(1.0f, 0.0f, 0.0f);
@@ -43,5 +45,12 @@ public class Monster : MonoBehaviour {
 	void FixedUpdate() {
 			anim.SetFloat("Speed", speed*direction.x);
 	}
-
+	void OnTriggerEnter (Collider other)
+	{
+		if(!died) {
+			if (other.gameObject.tag == "Bullet") {
+				Destroy(this.gameObject);
+			}
+		}
+	}
 }

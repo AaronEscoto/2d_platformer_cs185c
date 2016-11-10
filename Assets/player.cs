@@ -23,8 +23,14 @@ public class player : MonoBehaviour
 	float medHealth = .50f;
 	bool canDoubleJump = true;
 	public GameObject arrow;
+	public float direction;
 
 	//SpriteRenderer hBar;
+
+	public float GetDir()
+	{
+		return direction;
+	}
 
 	void Start ()
 	{
@@ -32,6 +38,7 @@ public class player : MonoBehaviour
 		cc = GetComponent<CharacterController> ();
 		ss = GetComponent<SpriteRenderer> ();
 		died = false;
+		direction = 0.0f;
 
 		//if (GameObject.Find("HealthBar")!=null)
 		//healthBar = GameObject.Find("HealthBar").GetComponent<Text>();
@@ -100,6 +107,8 @@ public class player : MonoBehaviour
 		dir.y += gravity * Time.deltaTime;
 		cc.Move (dir * Time.deltaTime);
 		animator.SetFloat ("direction", dir.x);
+		if (dir.x != 0)
+			direction = dir.x;
 
 	}
 
